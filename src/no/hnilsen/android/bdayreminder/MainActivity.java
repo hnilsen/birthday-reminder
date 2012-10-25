@@ -8,7 +8,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.util.Log;
+import android.widget.GridView;
+import no.hnilsen.android.bdayreminder.adapters.BirthdayCardAdapter;
 import no.hnilsen.android.bdayreminder.contact.GeneralContact;
 
 import java.util.ArrayList;
@@ -24,14 +25,12 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.grid_view);
 
         mContacts = populatecontacts();
 
-        for(GeneralContact person : mContacts) {
-            Log.d(TAG, person.getName() + ": " + person.getLocaleBirthday());
-
-        }
+        GridView gridView = (GridView) findViewById(R.id.gridView1);
+        gridView.setAdapter(new BirthdayCardAdapter(this, mContacts));
     }
 
     private List<GeneralContact> populatecontacts() {
@@ -43,7 +42,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         while (cursor.moveToNext()) {
             String bDay = cursor.getString(bDayColumn);
             String name = cursor.getString(nameColumn);
-            Log.d(TAG, name + ": " + bDay);
+//LOGGING            Log.d(TAG, name + ": " + bDay);
 
             contacts.add(new GeneralContact(this, bDay, name));
         }
@@ -51,7 +50,6 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         return contacts;
     }
 
-    // method to get name, contact id, and birthday
     private Cursor getContactsBirthdays() {
         Uri uri = ContactsContract.Data.CONTENT_URI;
 
@@ -65,13 +63,16 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
                 ContactsContract.Data.MIMETYPE + "= ? AND " +
                         ContactsContract.CommonDataKinds.Event.TYPE + "=" +
                         ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY;
+
         String[] selectionArgs = new String[] {
                 ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE
         };
+
         String sortOrder = null;
+
         CursorLoader cl = new CursorLoader(this, uri, projection, where, selectionArgs, sortOrder);
+
         return cl.loadInBackground();
-        //return managedQuery(uri, projection, where, selectionArgs, sortOrder);
     }
 
     @Override

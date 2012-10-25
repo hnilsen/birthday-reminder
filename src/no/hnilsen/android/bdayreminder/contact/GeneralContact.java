@@ -52,6 +52,10 @@ public class GeneralContact {
         this.name = name;
     }
 
+    public int getBirthdayAge() {
+        return getAge() + 1;
+    }
+
     public int getAge() {
         return mToday.get(GregorianCalendar.YEAR) - getYear();
     }
@@ -71,7 +75,7 @@ public class GeneralContact {
         int currentDOY = mToday.get(GregorianCalendar.DAY_OF_YEAR);
         int currentYear = mToday.get(GregorianCalendar.YEAR);
 
-        if(birthdayDOY > currentDOY) {
+        if(birthdayDOY < currentDOY) {
             currentYear += 1;
         }
 
@@ -98,7 +102,7 @@ public class GeneralContact {
 
     public String getLocaleDate(GregorianCalendar calendar) {
         GregorianCalendar gcal = new GregorianCalendar(calendar.get(GregorianCalendar.YEAR),
-                                                       calendar.get(GregorianCalendar.MONTH),
+                                                       calendar.get(GregorianCalendar.MONTH)-1,
                                                        calendar.get(GregorianCalendar.DAY_OF_MONTH));
 
         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext);
