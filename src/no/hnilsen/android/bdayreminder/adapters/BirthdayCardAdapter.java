@@ -49,20 +49,12 @@ public class BirthdayCardAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-/*
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View gridView;
-*/
         View gridView;
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             GeneralContact contact = mContacts.get(position);
             gridView = inflater.inflate(R.layout.grid_tile, null);
-
-            // get layout from mobile.xml
-//            gridView = inflater.inflate(R.layout.grid_tile, null);
 
             // set value into name
             TextView textViewName = (TextView) gridView.findViewById(R.id.name);
