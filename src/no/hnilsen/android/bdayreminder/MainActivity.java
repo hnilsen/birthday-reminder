@@ -43,7 +43,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         while (cursor.moveToNext()) {
             String bDay = cursor.getString(bDayColumn);
             String name = cursor.getString(nameColumn);
-//            Log.d(TAG, name + ": " + bDay);
+            Log.d(TAG, name + ": " + bDay);
 
             contacts.add(new GeneralContact(this, bDay, name));
         }

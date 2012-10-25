@@ -1,12 +1,9 @@
 package no.hnilsen.android.bdayreminder.contact;
 
 import android.content.Context;
-import org.joda.time.DateTime;
 
 import java.text.DateFormat;
-import java.text.Format;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
@@ -19,13 +16,13 @@ import java.util.Locale;
 public class GeneralContact {
     String birthday;
     String name;
- //   DateTime dtBirthday;
- //   DateTime dtToday;
 
     Locale locale;
 
-    Calendar cal;
-    Calendar today;
+    GregorianCalendar mBirthday;
+    GregorianCalendar mToday;
+
+    Context mContext;
 
     public GeneralContact(Context context, String birthday, String name) {
         this.birthday = birthday;
@@ -33,13 +30,10 @@ public class GeneralContact {
 
         locale = context.getResources().getConfiguration().locale;
 
-//        dtToday = new DateTime(context.getResources().getConfiguration().locale);
-//        dtBirthday = new DateTime(context.getResources().getConfiguration().locale);
+        mBirthday = new GregorianCalendar(getYear(), getMonth(), getDay());
+        mToday = new GregorianCalendar(locale);
 
-        today = Calendar.getInstance(context.getResources().getConfiguration().locale);
-
-        cal = Calendar.getInstance(context.getResources().getConfiguration().locale);
-        cal.set(getYear(), getMonth(), getDay());
+        mContext = context;
     }
 
     public String getBirthday() {
@@ -59,7 +53,7 @@ public class GeneralContact {
     }
 
     public int getAge() {
-        return today.get(Calendar.YEAR) - getYear();
+        return mToday.get(GregorianCalendar.YEAR) - getYear();
     }
 
     public int getDaysToBirthday() {
@@ -67,14 +61,27 @@ public class GeneralContact {
     }
 
     public String getLocaleDayOfBirth() {
-        return getLocaleDate(cal);
+        return getLocaleDate(mBirthday);
+    }
+
+    public GregorianCalendar getNextBirthday() {
+        GregorianCalendar bday = mBirthday;
+
+        int birthdayDOY = mBirthday.get(GregorianCalendar.DAY_OF_YEAR);
+        int currentDOY = mToday.get(GregorianCalendar.DAY_OF_YEAR);
+        int currentYear = mToday.get(GregorianCalendar.YEAR);
+
+        if(birthdayDOY > currentDOY) {
+            currentYear += 1;
+        }
+
+        bday.set(Calendar.YEAR, currentYear);
+
+        return bday;
     }
 
     public String getLocaleBirthday() {
-        Calendar bday = cal;
-        bday.set(Calendar.YEAR, 2012);
-
-        return getLocaleDate(bday);
+        return getLocaleDate(getNextBirthday());
     }
 
     public int getYear() {
@@ -89,14 +96,13 @@ public class GeneralContact {
         return Integer.parseInt(birthday.substring(8, 10));
     }
 
-    public String getLocaleDate(Calendar calendar) {
-        GregorianCalendar gcal = new GregorianCalendar(calendar.get(Calendar.YEAR),
-                                                       calendar.get(Calendar.MONTH),
-                                                       calendar.get(Calendar.DAY_OF_MONTH));
+    public String getLocaleDate(GregorianCalendar calendar) {
+        GregorianCalendar gcal = new GregorianCalendar(calendar.get(GregorianCalendar.YEAR),
+                                                       calendar.get(GregorianCalendar.MONTH),
+                                                       calendar.get(GregorianCalendar.DAY_OF_MONTH));
 
-        DateFormat df = DateFormat.getDateInstance(DateFormat.FULL, locale);
-
-        return df.format(gcal);
+        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext);
+        return dateFormat.format(gcal.getTime());
     }
 }
 
