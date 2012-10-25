@@ -102,7 +102,7 @@ public class GeneralContact {
 
     public String getLocaleDate(GregorianCalendar calendar) {
         GregorianCalendar gcal = new GregorianCalendar(calendar.get(GregorianCalendar.YEAR),
-                                                       calendar.get(GregorianCalendar.MONTH)-1,
+                                                       calendar.get(GregorianCalendar.MONTH)-1,    // ffffuuuuuuu java calendar
                                                        calendar.get(GregorianCalendar.DAY_OF_MONTH));
 
         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext);
