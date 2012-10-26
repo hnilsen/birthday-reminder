@@ -1,6 +1,7 @@
 package no.hnilsen.android.bdayreminder.contact;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -16,6 +17,7 @@ import java.util.Locale;
 public class GeneralContact {
     String birthday;
     String name;
+    Bitmap photo;
 
     Locale locale;
 
@@ -107,6 +109,14 @@ public class GeneralContact {
 
         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext);
         return dateFormat.format(gcal.getTime());
+    }
+
+    public Bitmap getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Bitmap photo) {
+        this.photo = photo;
     }
 }
 

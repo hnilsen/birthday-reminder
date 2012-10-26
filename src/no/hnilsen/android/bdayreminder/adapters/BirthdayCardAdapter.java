@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import no.hnilsen.android.bdayreminder.R;
 import no.hnilsen.android.bdayreminder.contact.GeneralContact;
@@ -63,6 +64,10 @@ public class BirthdayCardAdapter extends BaseAdapter {
             // set value into birthday
             TextView textViewBirthday = (TextView) gridView.findViewById(R.id.birthday);
             textViewBirthday.setText(contact.getLocaleBirthday());
+
+            // set contact photo
+            ImageView imageViewPhoto = (ImageView) gridView.findViewById(R.id.photo);
+            imageViewPhoto.setImageBitmap(contact.getPhoto());
         } else {
             gridView = convertView;
         }

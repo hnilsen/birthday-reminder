@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+              android:orientation="horizontal"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent" android:padding="10dp"
-              android:background="@android:color/background_light">
+              android:layout_height="fill_parent" android:background="@android:color/background_light">
 
-    <TextView
+    <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fornavn og etternavn"
-            android:id="@+id/name" android:typeface="serif" android:textColor="@color/grey_name"
-            android:textSize="@dimen/text_name" android:paddingTop="4dp" android:paddingBottom="4dp"
-            android:singleLine="true"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/birthday" android:textColor="@color/grey_date" android:textSize="@dimen/text_date"/>
+            android:id="@+id/photo" android:minHeight="100dp" android:minWidth="100dp"
+            android:background="@android:color/background_light"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:padding="10dp"
+            android:background="@android:color/background_light">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fornavn og etternavn"
+                android:id="@+id/name" android:typeface="serif" android:textColor="@color/grey_name"
+                android:textSize="@dimen/text_name" android:paddingTop="4dp" android:paddingBottom="4dp"
+                android:singleLine="true"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/birthday" android:textColor="@color/grey_date" android:textSize="@dimen/text_date"/>
+    </LinearLayout>
 </LinearLayout>
