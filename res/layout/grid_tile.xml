@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent" android:background="@android:color/background_light">
+              android:layout_height="100dp" android:background="@android:color/background_light">
 
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/photo" android:minHeight="100dp" android:minWidth="100dp"
-            android:background="@android:color/background_light"/>
+            android:background="@android:color/background_light" android:layout_alignParentTop="true"
+            android:layout_alignParentRight="false" android:layout_alignParentLeft="true"/>
     <LinearLayout
             android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:padding="10dp"
-            android:background="@android:color/background_light">
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:background="@android:color/background_light" android:minHeight="100dp"
+            android:layout_alignParentTop="true" android:layout_toRightOf="@+id/photo">
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Fornavn og etternavn"
                 android:id="@+id/name" android:typeface="serif" android:textColor="@color/grey_name"
-                android:textSize="@dimen/text_name" android:paddingTop="4dp" android:paddingBottom="4dp"
-                android:singleLine="true"/>
+                android:textSize="@dimen/text_name"
+                android:singleLine="false" android:minHeight="65dp" android:maxLines="2" android:paddingLeft="10dp"
+                android:paddingTop="10dp" android:paddingRight="10dp"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/birthday" android:textColor="@color/grey_date" android:textSize="@dimen/text_date"/>
+                android:text="08.03.2013 (32)"
+                android:id="@+id/birthday" android:textColor="@color/grey_date" android:textSize="@dimen/text_date"
+                android:layout_gravity="bottom" android:typeface="serif" android:paddingLeft="10dp"
+                android:paddingRight="10dp" android:paddingBottom="10dp"/>
     </LinearLayout>
-</LinearLayout>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/star" android:src="@drawable/btn_star_off_normal_holo_light"
+            android:layout_gravity="right|center_vertical" android:layout_alignWithParentIfMissing="false"
+            android:layout_alignParentBottom="true" android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"/>
+</RelativeLayout>
