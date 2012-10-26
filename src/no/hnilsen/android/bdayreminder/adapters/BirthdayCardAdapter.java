@@ -1,6 +1,7 @@
 package no.hnilsen.android.bdayreminder.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,12 +67,17 @@ public class BirthdayCardAdapter extends BaseAdapter {
             textViewBirthday.setText(contact.getLocaleBirthday());
 
             // set contact photo
-            ImageView imageViewPhoto = (ImageView) gridView.findViewById(R.id.photo);
-            imageViewPhoto.setImageBitmap(contact.getPhoto());
+            Bitmap photo = contact.getPhoto();
+            if(photo != null) {
+                ImageView imageViewPhoto = (ImageView) gridView.findViewById(R.id.photo);
+                imageViewPhoto.setImageBitmap(photo);
+            }
         } else {
             gridView = convertView;
         }
 
         return gridView;
     }
+
+
 }

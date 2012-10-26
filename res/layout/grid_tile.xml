@@ -10,7 +10,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/photo" android:minHeight="100dp" android:minWidth="100dp"
             android:background="@android:color/background_light" android:layout_alignParentTop="true"
-            android:layout_alignParentRight="false" android:layout_alignParentLeft="true"/>
+            android:layout_alignParentRight="false" android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_contact_picture"/>
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -33,11 +34,14 @@
                 android:layout_gravity="bottom" android:typeface="serif" android:paddingLeft="10dp"
                 android:paddingRight="10dp" android:paddingBottom="10dp"/>
     </LinearLayout>
-    <ImageView
+    <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/star" android:src="@drawable/btn_star_off_normal_holo_light"
-            android:layout_gravity="right|center_vertical" android:layout_alignWithParentIfMissing="false"
-            android:layout_alignParentBottom="true" android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"/>
+            android:id="@+id/star" android:layout_alignParentRight="true"
+            android:layout_alignWithParentIfMissing="false" android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="false"
+            android:enabled="true"
+            android:checked="false" android:clickable="true" android:button="@drawable/star_checkbox"
+            android:focusableInTouchMode="false"
+            android:layout_alignParentLeft="false" />
 </RelativeLayout>
