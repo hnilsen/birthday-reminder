@@ -72,6 +72,8 @@ public class BirthdayCardAdapter extends BaseAdapter {
                 ImageView imageViewPhoto = (ImageView) gridView.findViewById(R.id.photo);
                 imageViewPhoto.setImageBitmap(photo);
             }
+
+            gridView.setClickable(true);
         } else {
             gridView = convertView;
         }

@@ -13,13 +13,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 import no.hnilsen.android.bdayreminder.adapters.BirthdayCardAdapter;
 import no.hnilsen.android.bdayreminder.contact.GeneralContact;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends Activity implements LoaderManager.LoaderCallbacks {
     static String TAG = "BdayReminder";
@@ -37,6 +42,16 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 
         GridView gridView = (GridView) findViewById(R.id.gridView1);
         gridView.setAdapter(new BirthdayCardAdapter(this, mContacts));
+        gridView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CharSequence text = "Hello toast! " + id;
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                toast.show();
+            }
+        });
     }
 
     private List<GeneralContact> populatecontacts() {

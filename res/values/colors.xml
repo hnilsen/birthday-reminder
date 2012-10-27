@@ -1,3 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<color name="grey_name">#555555</color><color name="grey_date">#444444</color><color name="background_gridview">#cccccc</color></resources>
+    <color name="grey_name">#555555</color>
+    <color name="grey_date">#444444</color>
+    <color name="background_gridview">#cccccc</color>
+    <color name="background_gridtile_pressed">#6633b5e5</color>
+    <color name="background_gridtile_focused">#323232</color>
+    <color name="background_gridtile_normal">#ffffff</color>
+</resources>
