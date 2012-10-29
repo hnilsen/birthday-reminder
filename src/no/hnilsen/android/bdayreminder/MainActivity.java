@@ -18,8 +18,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.GridLayoutAnimationController;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.GridView;
-import android.widget.Toast;
 import no.hnilsen.android.bdayreminder.adapters.BirthdayCardAdapter;
 import no.hnilsen.android.bdayreminder.contact.GeneralContact;
 
@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         mContacts = populatecontacts();
 
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.tile_fade_in);
-        GridLayoutAnimationController animationController = new GridLayoutAnimationController(animation,  0.2f, 0.2f);
+        GridLayoutAnimationController animationController = new GridLayoutAnimationController(animation, 0.2f, 0.2f);
 
         GridView gridView = (GridView) findViewById(R.id.gridView1);
         gridView.setAdapter(new BirthdayCardAdapter(this, mContacts));
@@ -52,9 +52,8 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         gridView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "Not fireing");
-
-                Toast.makeText(MainActivity.this, "Item " + position, Toast.LENGTH_SHORT).show();
+                CheckBox checkBox = (CheckBox) view.findViewById(R.id.star);
+                checkBox.toggle();
             }
         });
     }
@@ -62,7 +61,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
     @Override
     protected void onStart() {
         super.onStart();
-        ((GridView)findViewById(R.id.gridView1)).getLayoutAnimation().start();
+        ((GridView) findViewById(R.id.gridView1)).getLayoutAnimation().start();
     }
 
     private List<GeneralContact> populatecontacts() {
@@ -92,7 +91,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
     private Cursor getContactsBirthdays() {
         Uri uri = ContactsContract.Data.CONTENT_URI;
 
-        String[] projection = new String[] {
+        String[] projection = new String[]{
                 ContactsContract.Contacts.DISPLAY_NAME,
                 ContactsContract.Contacts._ID,
                 ContactsContract.CommonDataKinds.Event.START_DATE,
@@ -101,11 +100,11 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 
         String where =
                 ContactsContract.Data.MIMETYPE + "= ? AND " +
-                ContactsContract.CommonDataKinds.Event.TYPE + "=" +
-                ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY;
+                        ContactsContract.CommonDataKinds.Event.TYPE + "=" +
+                        ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY;
 
 
-        String[] selectionArgs = new String[] {
+        String[] selectionArgs = new String[]{
                 ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE
         };
 
@@ -116,8 +115,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         return cl.loadInBackground();
     }
 
-    public static Bitmap loadContactPhoto(ContentResolver cr, long id, long photo_id)
-    {
+    public static Bitmap loadContactPhoto(ContentResolver cr, long id, long photo_id) {
         Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id);
         InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(cr, uri);
         if (input != null) {
@@ -127,7 +125,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         byte[] photoBytes = null;
         Uri photoUri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photo_id);
 
-        Cursor c = cr.query(photoUri, new String[] {ContactsContract.CommonDataKinds.Photo.PHOTO}, null, null, null);
+        Cursor c = cr.query(photoUri, new String[]{ContactsContract.CommonDataKinds.Photo.PHOTO}, null, null, null);
 
         try {
             if (c.moveToFirst())
@@ -139,7 +137,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         }
 
         if (photoBytes != null)
-            return BitmapFactory.decodeByteArray(photoBytes,0,photoBytes.length);
+            return BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
 
         return null;
     }
