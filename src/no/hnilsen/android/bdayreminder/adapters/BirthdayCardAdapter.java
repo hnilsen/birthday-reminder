@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -73,7 +75,9 @@ public class BirthdayCardAdapter extends BaseAdapter {
                 imageViewPhoto.setImageBitmap(photo);
             }
 
-            gridView.setClickable(true);
+            // set animation properties
+            Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.tile_fade_in);
+            gridView.setAnimation(anim);
         } else {
             gridView = convertView;
         }

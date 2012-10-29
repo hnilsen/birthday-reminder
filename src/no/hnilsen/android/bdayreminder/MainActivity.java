@@ -14,6 +14,9 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.GridLayoutAnimationController;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -40,18 +43,26 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 
         mContacts = populatecontacts();
 
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.tile_fade_in);
+        GridLayoutAnimationController animationController = new GridLayoutAnimationController(animation,  0.2f, 0.2f);
+
         GridView gridView = (GridView) findViewById(R.id.gridView1);
         gridView.setAdapter(new BirthdayCardAdapter(this, mContacts));
+        gridView.setLayoutAnimation(animationController);
         gridView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CharSequence text = "Hello toast! " + id;
-                int duration = Toast.LENGTH_SHORT;
+                Log.d(TAG, "Not fireing");
 
-                Toast toast = Toast.makeText(getApplicationContext(), text, duration);
-                toast.show();
+                Toast.makeText(MainActivity.this, "Item " + position, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ((GridView)findViewById(R.id.gridView1)).getLayoutAnimation().start();
     }
 
     private List<GeneralContact> populatecontacts() {
