@@ -5,8 +5,7 @@
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="100dp"
-                android:background="@drawable/grid_tile_selector"
-                android:clickable="true">
+                android:background="@drawable/grid_tile_selector">
 
     <ImageView android:layout_width="wrap_content"
                android:layout_height="wrap_content"
@@ -57,11 +56,11 @@
               android:layout_alignWithParentIfMissing="false"
               android:layout_alignParentBottom="true"
               android:layout_alignParentTop="false"
+              android:layout_alignParentLeft="false"
               android:enabled="true"
               android:checked="false"
               android:clickable="false"
               android:button="@drawable/star_checkbox"
               android:focusable="false"
-              android:focusableInTouchMode="false"
-              android:layout_alignParentLeft="false" />
+              android:focusableInTouchMode="false" />
 </RelativeLayout>
