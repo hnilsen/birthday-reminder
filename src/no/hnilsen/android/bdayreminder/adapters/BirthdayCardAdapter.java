@@ -2,12 +2,14 @@ package no.hnilsen.android.bdayreminder.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import no.hnilsen.android.bdayreminder.R;
@@ -41,7 +43,7 @@ public class BirthdayCardAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         if(mContacts != null) {
-            mContacts.get(position);
+            return mContacts.get(position);
         }
         return "";
     }
@@ -54,36 +56,39 @@ public class BirthdayCardAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View gridView;
+        GeneralContact contact = mContacts.get(position);
 
-        if (convertView == null) {
+        gridView = convertView;
+
+        if (gridView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            GeneralContact contact = mContacts.get(position);
             gridView = inflater.inflate(R.layout.grid_tile, null);
 
-            // set value into name
-            TextView textViewName = (TextView) gridView.findViewById(R.id.name);
-            textViewName.setText(contact.getName());
-
-            // set value into birthday
-            TextView textViewBirthday = (TextView) gridView.findViewById(R.id.birthday);
-            textViewBirthday.setText(contact.getLocaleBirthday());
-
-            // set contact photo
-            Bitmap photo = contact.getPhoto();
-            if(photo != null) {
-                ImageView imageViewPhoto = (ImageView) gridView.findViewById(R.id.photo);
-                imageViewPhoto.setImageBitmap(photo);
-            }
-
-            // set animation properties
+            // set animation properties - only animate newly drawn layouts
             Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.tile_fade_in);
             gridView.setAnimation(anim);
-        } else {
-            gridView = convertView;
         }
+
+        // set value into name
+        TextView textViewName = (TextView) gridView.findViewById(R.id.name);
+        textViewName.setText(contact.getName());
+
+        // set value into birthday
+        TextView textViewBirthday = (TextView) gridView.findViewById(R.id.birthday);
+        textViewBirthday.setText(contact.getLocaleBirthday());
+
+        // set contact photo
+        Bitmap photo = contact.getPhoto();
+        if(photo == null) {
+            photo = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_contact_picture);
+        }
+        ImageView imageViewPhoto = (ImageView) gridView.findViewById(R.id.photo);
+        imageViewPhoto.setImageBitmap(photo);
+
+        // set checkbox
+        CheckBox checkBox = (CheckBox) gridView.findViewById(R.id.star);
+        checkBox.setChecked(contact.isSelected());
 
         return gridView;
     }
-
-
 }

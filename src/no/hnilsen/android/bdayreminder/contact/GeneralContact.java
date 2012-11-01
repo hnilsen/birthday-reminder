@@ -1,8 +1,17 @@
 package no.hnilsen.android.bdayreminder.contact;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.ContactsContract;
+import android.util.Log;
+import no.hnilsen.android.bdayreminder.MainActivity;
 
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -26,16 +35,26 @@ public class GeneralContact {
 
     Context mContext;
 
-    public GeneralContact(Context context, String birthday, String name) {
+    Uri uri;
+    long id;
+    boolean selected = false;
+
+    public GeneralContact(Context context, long id, String birthday, String name, long photoId) {
         this.birthday = birthday;
         this.name = name;
+        this.id = id;
+
+        mContext = context;
+
+        uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id);
 
         locale = context.getResources().getConfiguration().locale;
+        // TODO: Add selected = true when stored as true
+
+        photo = loadContactPhoto(mContext.getContentResolver(), id, photoId);
 
         mBirthday = new GregorianCalendar(getYear(), getMonth(), getDay());
         mToday = new GregorianCalendar(locale);
-
-        mContext = context;
     }
 
     public String getBirthday() {
@@ -118,5 +137,50 @@ public class GeneralContact {
     public void setPhoto(Bitmap photo) {
         this.photo = photo;
     }
+
+    public Uri getUri() {
+        return uri;
+    }
+
+    public void setUri(Uri uri) {
+        this.uri = uri;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public static Bitmap loadContactPhoto(ContentResolver cr, long id, long photo_id) {
+        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id);
+        InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(cr, uri);
+        if (input != null) {
+            return BitmapFactory.decodeStream(input);
+        }
+
+        byte[] photoBytes = null;
+        Uri photoUri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photo_id);
+
+        Cursor c = cr.query(photoUri, new String[]{ContactsContract.CommonDataKinds.Photo.PHOTO}, null, null, null);
+
+        try {
+            if (c.moveToFirst())
+                photoBytes = c.getBlob(0);
+        } catch (Exception e) {
+            Log.d(MainActivity.TAG, e.getMessage());
+        } finally {
+            c.close();
+        }
+
+        if (photoBytes != null)
+            return BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
+
+        return null;
+    }
+
+
 }
 

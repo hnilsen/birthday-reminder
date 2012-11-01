@@ -2,13 +2,9 @@ package no.hnilsen.android.bdayreminder;
 
 import android.app.Activity;
 import android.app.LoaderManager;
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -23,14 +19,13 @@ import android.widget.GridView;
 import no.hnilsen.android.bdayreminder.adapters.BirthdayCardAdapter;
 import no.hnilsen.android.bdayreminder.contact.GeneralContact;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends Activity implements LoaderManager.LoaderCallbacks {
-    static String TAG = "BdayReminder";
+    public static String TAG = "BdayReminder";
     List<GeneralContact> mContacts = new ArrayList<GeneralContact>();
 
     /**
@@ -41,7 +36,11 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.grid_view);
 
-        mContacts = populatecontacts();
+        mContacts = populateContacts();
+
+        for(GeneralContact contact : mContacts) {
+            Log.d(TAG, contact.getLocaleBirthday() + " " + contact.getUri());
+        }
 
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.tile_fade_in);
         GridLayoutAnimationController animationController = new GridLayoutAnimationController(animation, 0.2f, 0.2f);
@@ -52,8 +51,12 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         gridView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                BirthdayCardAdapter birthdayCardAdapter = (BirthdayCardAdapter) parent.getAdapter();
+                GeneralContact contact = (GeneralContact) birthdayCardAdapter.getItem(position);
+                contact.setSelected(!contact.isSelected());
+
                 CheckBox checkBox = (CheckBox) view.findViewById(R.id.star);
-                checkBox.toggle();
+                checkBox.setChecked(contact.isSelected());
             }
         });
     }
@@ -64,7 +67,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         ((GridView) findViewById(R.id.gridView1)).getLayoutAnimation().start();
     }
 
-    private List<GeneralContact> populatecontacts() {
+    private List<GeneralContact> populateContacts() {
         List<GeneralContact> contacts = new ArrayList<GeneralContact>();
 
         Cursor cursor = getContactsBirthdays();
@@ -79,9 +82,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
             long contactId = cursor.getLong(contactIdColumn);
             long photoId = cursor.getLong(photoIdColumn);
 
-            GeneralContact gc = new GeneralContact(this, bDay, name);
-            gc.setPhoto(loadContactPhoto(getContentResolver(), contactId, photoId));
-
+            GeneralContact gc = new GeneralContact(this, contactId, bDay, name, photoId);
             contacts.add(gc);
         }
 
@@ -113,33 +114,6 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         CursorLoader cl = new CursorLoader(this, uri, projection, where, selectionArgs, sortOrder);
 
         return cl.loadInBackground();
-    }
-
-    public static Bitmap loadContactPhoto(ContentResolver cr, long id, long photo_id) {
-        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id);
-        InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(cr, uri);
-        if (input != null) {
-            return BitmapFactory.decodeStream(input);
-        }
-
-        byte[] photoBytes = null;
-        Uri photoUri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photo_id);
-
-        Cursor c = cr.query(photoUri, new String[]{ContactsContract.CommonDataKinds.Photo.PHOTO}, null, null, null);
-
-        try {
-            if (c.moveToFirst())
-                photoBytes = c.getBlob(0);
-        } catch (Exception e) {
-            Log.d(TAG, e.getMessage());
-        } finally {
-            c.close();
-        }
-
-        if (photoBytes != null)
-            return BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
-
-        return null;
     }
 
     @Override
