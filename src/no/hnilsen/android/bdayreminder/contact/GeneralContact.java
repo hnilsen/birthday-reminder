@@ -9,7 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.util.Log;
-import no.hnilsen.android.bdayreminder.MainActivity;
+import no.hnilsen.android.bdayreminder.Helper;
 
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -170,7 +170,7 @@ public class GeneralContact {
             if (c.moveToFirst())
                 photoBytes = c.getBlob(0);
         } catch (Exception e) {
-            Log.d(MainActivity.TAG, e.getMessage());
+            Log.d(Helper.TAG, e.getMessage());
         } finally {
             c.close();
         }
@@ -181,6 +181,8 @@ public class GeneralContact {
         return null;
     }
 
-
+    public long getId() {
+        return id;
+    }
 }
 
